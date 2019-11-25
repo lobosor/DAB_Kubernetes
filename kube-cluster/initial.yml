@@ -1,0 +1,36 @@
+- hosts: all
+  become: yes
+  tasks:
+
+    - name: install sudo
+      apt:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - sudo
+
+    - name: create the 'julien' user
+      user: name=julien append=yes state=present createhome=yes shell=/bin/bash
+
+    - name: allow 'julien' to have passwordless sudo
+      lineinfile:
+        dest: /etc/sudoers
+        line: 'julien ALL=(ALL) NOPASSWD: ALL'
+        validate: 'visudo -cf %s'
+
+    - name: set up authorized keys for the sammy user
+      authorized_key: user=julien key="{{item}}"
+      with_file:
+        - ~/.ssh/id_rsa.pub
+    
+#    - name: delete CD deb
+#      lineinfile:
+#        dest: /etc/apt/sources.list
+#        regexp: '^deb cdrom'
+#        line: #deb
+
+    - name: swap off
+      shell: swapoff -a
+
+
+    
