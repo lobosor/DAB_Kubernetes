@@ -23,11 +23,11 @@
       with_file:
         - ~/.ssh/id_rsa.pub
     
-#    - name: delete CD deb
-#      lineinfile:
-#        dest: /etc/apt/sources.list
-#        regexp: '^deb cdrom'
-#        line: #deb
+    - name: delete CD deb
+      lineinfile:
+        dest: /etc/apt/sources.list
+        regexp: '^deb cdrom'
+        line: #deb
 
     - name: swap off
       shell: swapoff -a
